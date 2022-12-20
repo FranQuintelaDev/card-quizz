@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import './custom.css';
-import Users from './pages/Users';
-import UsersDetail from './pages/UsersDetail';
-import UsersList from './pages/UsersList';
+import FootballPlayers from './pages/UsersList';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -16,17 +14,11 @@ export default class App extends Component {
           <Route
             path="*"
             element={
-              <Navigate to="/users" />
+              <Navigate to="/football-players" />
             }
           />
 
-          <Route path="/users" element={<Users />}>
-
-            <Route
-              path="/users/:userId"
-              element={<UsersDetail />}
-            />
-            <Route path="" element={<UsersList />} />
+          <Route path="/football-players" element={<FootballPlayers />}>
           </Route>
         </Routes>
       </Layout>

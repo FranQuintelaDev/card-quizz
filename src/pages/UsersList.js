@@ -1,138 +1,70 @@
 import React from 'react';
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Modal from '../components/Modal';
+import messi from './messi-chiquito.jpg';
+import classNames from 'classnames';
+
+export default function FootballPlayers() {
 
 
-export default function UsersList() {
+  const clickHandler = (event) => {
+    const allWithClass = Array.from(
+      document.querySelectorAll('div.correct')
+    );
+    allWithClass.forEach(element => {
+      element.classList.remove('correct');
+    });
+    const allWithClassIncorrect = Array.from(
+      document.querySelectorAll('div.incorrect')
+    );
+    allWithClassIncorrect.forEach(element => {
+      element.classList.remove('incorrect');
+    });
 
-  const [users, setUsers] = useState();
-  const [showModalUser, setShowModalUser] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-  });
-
-  useEffect(() => {
-
-    fetch("https://sandbox-demo.azuremicroservices.io/api/users")
-      .then(res => res.json())
-      .then(
-        (data) => {
-          setUsers(data);
-        }
-      );
-
-  }, [])
-
-  const handleChangeUser = (event) => {
-    console.log(event)
-    setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmitUser = (event) => {
-    event.preventDefault();
-    console.log(event);
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(
-        {
-          "firstName":userInfo.firstName,
-          "lastName": userInfo.lastName,
-          "email":userInfo.email,
-          "phoneNumber":userInfo.phoneNumber
-        })
+    if(event.target.innerText === 'Messi chiquito'){
+      event.currentTarget.classList.add('correct');
+    }else{
+      event.currentTarget.classList.add('incorrect');
     };
-
-    fetch("https://sandbox-demo.azuremicroservices.io/api/users", requestOptions)
-      .then(res => res.json())
-      .then(
-        (data) => {
-          console.log(data);
-          setUsers(data);
-        },
-        (error) => {
-        }
-      );
+    
   };
+
 
   return (
     <>
-      <div className="cols">
-        <h1 className="title">Users</h1>
+      <div className="rows">
+        <div className="cols">
+          <div className="football-player rows">
 
-        <button id="addUserButton" onClick={() => setShowModalUser(true)}>Add User</button>
-      </div>
+            <img src={messi} alt="Hot air balloons" className='raised img cover rounded-top' />
+            <div className="card-description flex-center" >
+              <h2>Messi </h2>
+              <p>Messi chiquito messi chiquito </p>
 
+            </div>
+            <div className="options rows">
+              <div className="cols">
+              <div className={classNames({ "option neumo flat flex-center": true })} onClick={clickHandler}>
+                  Messi
 
-      {users ?
-        <>
-          <div id="users" className="rows">
-            {users.map(user =>
-              <Link to={"/users/" + user.id} key={user.id} id="user">
-                <div className="card cols"  >
-                  <img src="https://via.placeholder.com/150 " alt="Avatar" style={{ width: 'width:100%' }} />
-                  <div className="container">
-                    <h4><b>{user.firstName + ' ' + user.lastName}</b></h4>
-                    <p>Click to see details</p>
-                  </div>
                 </div>
-              </Link>
-            )}
+                <div className={classNames({ "option neumo flat flex-center": true })} onClick={clickHandler}>
+                  Chiquito
+
+                </div>
+              </div>
+              <div className="cols">
+              <div className={classNames({ "option neumo flat flex-center": true })} onClick={clickHandler}>
+                  Messi chiquito
+
+                </div>
+                <div className={classNames({ "option neumo flat flex-center": true })} onClick={clickHandler}>
+                  La pulga argentina
+
+                </div>
+              </div>
+            </div>
           </div>
-
-        </> : <></>}
-
-        <Modal title="Add User" id="addUserModal" onClose={() => setShowModalUser(false)} show={showModalUser}>
-              <form onSubmit={handleSubmitUser}>
-
-              <div>
-                  <input
-                    type="text"
-                    name="firstName"
-                    id="firstName"
-                    placeholder="firstName"
-                    onChange={handleChangeUser}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    name="lastName"
-                    id="lastName"
-                    placeholder="lastName"
-                    onChange={handleChangeUser}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    name="email"
-                    id="email"
-                    placeholder="email"
-                    onChange={handleChangeUser}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    name="phoneNumber"
-                    id="phoneNumber"
-                    placeholder="phoneNumber"
-                    onChange={handleChangeUser}
-                  />
-                </div>
-                <div>
-                  <button type="submit" id="addUserSubmitButton">Submit</button>
-                </div>
-
-              </form>
-            </Modal>
-            
+        </div>
+      </div>
     </>
   );
 
